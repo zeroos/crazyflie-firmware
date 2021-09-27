@@ -103,7 +103,15 @@ void stateEstimatorSwitchTo(StateEstimatorType estimator) {
     newEstimator = DEFAULT_ESTIMATOR;
   }
 
-  StateEstimatorType forcedEstimator = ESTIMATOR_NAME;
+  #if CONFIG_ESTIMATOR_KALMAN == 1
+    #define ESTIMATOR kalmanEstimator
+  #elif CONFIG_ESTIMATOR_COMPLEMENTARY == 1
+    #define ESTIMATOR complementaryEstimator
+  #else
+    #define ESTIMATOR anyEstimator
+  #endif
+
+  StateEstimatorType forcedEstimator = ESTIMATOR;
   if (forcedEstimator != anyEstimator) {
     DEBUG_PRINT("Estimator type forced\n");
     newEstimator = forcedEstimator;

@@ -7,6 +7,8 @@
 #include "controller_mellinger.h"
 #include "controller_indi.h"
 
+#include "autoconf.h"
+
 #define DEFAULT_CONTROLLER ControllerTypePID
 static ControllerType currentController = ControllerTypeAny;
 
@@ -38,7 +40,17 @@ void controllerInit(ControllerType controller) {
     currentController = DEFAULT_CONTROLLER;
   }
 
-  ControllerType forcedController = CONTROLLER_NAME;
+  #if CONFIG_CONTROLLER_PID == 1
+    #define CONTROLLER ControllerTypePID
+  #elif CONFIG_CONTROLLER_INDI == 1
+    #define CONTROLLER ControllerTypeINDI
+  #elif CONFIG_CONTROLLER_MELLINGER == 1
+    #define CONTROLLER ControllerTypeMellinger
+  #else
+    #define CONTROLLER ControllerTypeAny
+  #endif
+
+  ControllerType forcedController = CONTROLLER;
   if (forcedController != ControllerTypeAny) {
     DEBUG_PRINT("Controller type forced\n");
     currentController = forcedController;

@@ -32,7 +32,7 @@
 #include "deck_memory.h"
 #include "debug.h"
 
-#ifdef DEBUG
+#if CONFIG_DEBUG == 1
   #define DECK_CORE_DBG_PRINT(fmt, ...)  DEBUG_PRINT(fmt, ## __VA_ARGS__)
 #else
   #define DECK_CORE_DBG_PRINT(...)
